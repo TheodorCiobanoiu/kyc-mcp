@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  postgres-kyc:
+    image: postgres:16-alpine
+    container_name: kyc-postgres
+    environment:
+      POSTGRES_DB: kyc_db
+      POSTGRES_USER: kyc_user
+      POSTGRES_PASSWORD: kyc_password
+      POSTGRES_INITDB_ARGS: "--encoding=UTF-8"
+    ports:
+      - "5432:5432"
+    volumes:
+      - kyc_postgres_data:/var/lib/postgresql/data
+      - ./docker/init-scripts:/docker-entrypoint-initdb.d
+    networks:
+      - kyc-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U kyc_user -d kyc_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Optional: pgAdmin for database management
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: kyc-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@kyc.local
+      PGADMIN_DEFAULT_PASSWORD: admin123
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    ports:
+      - "8081:80"
+    volumes:
+      - kyc_pgadmin_data:/var/lib/pgadmin
+    networks:
+      - kyc-network
+    depends_on:
+      postgres-kyc:
+        condition: service_healthy
+    restart: unless-stopped
+
+networks:
+  kyc-network:
+    driver: bridge
+
+volumes:
+  kyc_postgres_data:
+    driver: local
+  kyc_pgadmin_data:
+    driver: local
