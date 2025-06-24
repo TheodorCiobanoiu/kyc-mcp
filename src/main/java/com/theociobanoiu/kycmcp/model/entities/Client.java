@@ -14,7 +14,6 @@ import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -47,7 +46,6 @@ public class Client {
     @Column(name = "registration_number")
     private String registrationNumber;
 
-    @NotNull(message = "Risk level is required")
     @Enumerated(EnumType.STRING)
     @Column(name = "risk_level", nullable = false)
     private RiskLevel riskLevel;

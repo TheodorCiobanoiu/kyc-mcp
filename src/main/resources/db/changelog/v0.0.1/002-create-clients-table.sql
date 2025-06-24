@@ -10,7 +10,7 @@ CREATE TABLE clients
     email               VARCHAR(255),
     phone               VARCHAR(50),
     registration_number VARCHAR(100),
-    risk_level          risk_level   NOT NULL,
+    risk_level risk_level,
     created_at          TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at          TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
