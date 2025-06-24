@@ -1,6 +1,6 @@
 --liquibase formatted sql
 
---changeset theociobanoiu:6
+--changeset theociobanoiu:4
 --comment: Create clients table
 CREATE TABLE clients
 (

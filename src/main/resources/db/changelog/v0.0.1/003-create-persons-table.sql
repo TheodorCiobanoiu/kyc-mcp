@@ -1,6 +1,6 @@
 --liquibase formatted sql
 
---changeset theociobanoiu:7
+--changeset theociobanoiu:5
 --comment: Create persons table
 CREATE TABLE persons
 (

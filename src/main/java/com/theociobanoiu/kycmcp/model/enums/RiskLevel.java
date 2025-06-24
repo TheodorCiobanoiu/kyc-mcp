@@ -4,6 +4,5 @@ package com.theociobanoiu.kycmcp.model.enums;
 public enum RiskLevel {
     LOW,
     MEDIUM,
-    HIGH,
-    CRITICAL
+    HIGH
 }
