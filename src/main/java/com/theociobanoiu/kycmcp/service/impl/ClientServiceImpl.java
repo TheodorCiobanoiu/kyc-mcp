@@ -35,8 +35,8 @@ public class ClientServiceImpl implements ClientService {
 
         try {
             Client savedClient = clientRepository.save(client);
-            log.info("Successfully created client with ID: {} and name: {}", savedClient.getId(),
-                savedClient.getName());
+            log.info("Successfully created client with ID: {} and name: {}",
+                    savedClient.getId(), savedClient.getName());
             return ClientDTO.from(savedClient);
         } catch (Exception e) {
             log.error("Error creating client with name '{}': {}", request.name(), e.getMessage(), e);
@@ -64,12 +64,12 @@ public class ClientServiceImpl implements ClientService {
         }
 
         return clientRepository.findById(clientId)
-            .map(client -> {
-                log.debug("Found client: {}, fetching associated persons", client.getName());
-                List<Person> persons = personRepository.findByClientId(clientId);
-                log.debug("Found {} persons for client ID: {}", persons.size(), clientId);
-                return ClientDTO.fromWithPersons(client, persons);
-            });
+                .map(client -> {
+                    log.debug("Found client: {}, fetching associated persons", client.getName());
+                    List<Person> persons = personRepository.findByClientId(clientId);
+                    log.debug("Found {} persons for client ID: {}", persons.size(), clientId);
+                    return ClientDTO.fromWithPersons(client, persons);
+                });
     }
 
     @Override
@@ -92,31 +92,6 @@ public class ClientServiceImpl implements ClientService {
         return ClientDTO.fromList(clients);
     }
 
-
-    @Override
-    public Optional<ClientDTO> updateClientRiskLevel(Long clientId, RiskLevel newRiskLevel) {
-        log.debug("Updating risk level for client ID: {} to {}", clientId, newRiskLevel);
-
-        if (clientId == null) {
-            log.warn("Client ID is null for risk level update");
-            return Optional.empty();
-        }
-
-        if (newRiskLevel == null) {
-            throw new IllegalArgumentException("New risk level cannot be null");
-        }
-
-        return clientRepository.findById(clientId)
-            .map(client -> {
-                RiskLevel oldRiskLevel = client.getRiskLevel();
-                client.setRiskLevel(newRiskLevel);
-                Client savedClient = clientRepository.save(client);
-                log.info("Updated client ID: {} risk level from {} to {}",
-                    clientId, oldRiskLevel, newRiskLevel);
-                return ClientDTO.from(savedClient);
-            });
-    }
-
     @Override
     public boolean clientExists(Long clientId) {
         if (clientId == null) {
@@ -127,35 +102,4 @@ public class ClientServiceImpl implements ClientService {
         log.debug("Client ID: {} exists: {}", clientId, exists);
         return exists;
     }
-
-    @Override
-    public List<ClientDTO> getClientsByType(ClientType clientType) {
-        log.debug("Getting clients by type: {}", clientType);
-
-        if (clientType == null) {
-            log.warn("Client type is null, returning empty list");
-            return List.of();
-        }
-
-        List<Client> clients = clientRepository.findByClientType(clientType);
-        log.debug("Found {} clients with type: {}", clients.size(), clientType);
-
-        return ClientDTO.fromList(clients);
-    }
-
-    @Override
-    public List<ClientDTO> getClientsByRiskLevel(RiskLevel riskLevel) {
-        log.debug("Getting clients by risk level: {}", riskLevel);
-
-        if (riskLevel == null) {
-            log.warn("Risk level is null, returning empty list");
-            return List.of();
-        }
-
-        List<Client> clients = clientRepository.findByRiskLevel(riskLevel);
-        log.debug("Found {} clients with risk level: {}", clients.size(), riskLevel);
-
-        return ClientDTO.fromList(clients);
-    }
-
 }

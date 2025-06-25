@@ -10,26 +10,23 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Service interface for managing KYC client operations. Provides methods for client CRUD operations, searching, and
- * business logic.
+ * Service interface for managing KYC client operations.
+ * MVP version with only essential methods for Sprint 1.
  */
 public interface ClientService {
 
     /**
-     * Creates a new client in the system based on the provided request data. The request must contain all required
-     * client information as specified in CreateClientRequest.
+     * Creates a new client in the system based on the provided request data.
      *
      * @param request the request object containing client creation data (must not be null)
      * @return The created client in a {@link ClientDTO} format
-     * @throws jakarta.validation.ConstraintViolationException if the request contains invalid data
-     * @throws IllegalArgumentException                        if the request contains conflicting or invalid business
-     *                                                         rules
+     * @throws IllegalArgumentException if the request contains invalid data
      */
     ClientDTO createClient(@NotNull CreateClientRequest request);
 
     /**
-     * Search for clients by name, type, or risk level. All parameters are optional - null values are ignored in the
-     * search.
+     * Search for clients by name, type, or risk level.
+     * All parameters are optional - null values are ignored in the search.
      *
      * @param name       partial name to search for (case-insensitive)
      * @param clientType specific client type to filter by
@@ -54,42 +51,19 @@ public interface ClientService {
     List<ClientDTO> getAllClients();
 
     /**
-     * Retrieve all high-risk clients for compliance review. Results are ordered by client name for easier review.
+     * Retrieve all high-risk clients for compliance review.
+     * Results are ordered by client name for easier review.
      *
      * @return list of high-risk clients ordered by name
      */
     List<ClientDTO> getHighRiskClients();
 
     /**
-     * Update a client's risk level based on a new assessment.
-     *
-     * @param clientId     the client's unique identifier
-     * @param newRiskLevel the updated risk level
-     * @return the updated client, or empty if a client not found
-     */
-    Optional<ClientDTO> updateClientRiskLevel(Long clientId, RiskLevel newRiskLevel);
-
-    /**
-     * Check if a client exists by ID. Useful for validation before performing operations.
+     * Check if a client exists by ID.
+     * Essential for PersonService validation.
      *
      * @param clientId the client's unique identifier
      * @return true if client exists, false otherwise
      */
     boolean clientExists(Long clientId);
-
-    /**
-     * Get all clients of a specific type.
-     *
-     * @param clientType the type to filter by
-     * @return list of clients matching the type
-     */
-    List<ClientDTO> getClientsByType(ClientType clientType);
-
-    /**
-     * Get all clients with a specific risk level.
-     *
-     * @param riskLevel the risk level to filter by
-     * @return list of clients matching the risk level
-     */
-    List<ClientDTO> getClientsByRiskLevel(RiskLevel riskLevel);
 }
