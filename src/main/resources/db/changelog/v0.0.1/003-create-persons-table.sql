@@ -12,7 +12,7 @@ CREATE TABLE persons
     date_of_birth         DATE,
     nationality           VARCHAR(100),
     identification_number VARCHAR(100),
-    relationship_type     relationship_type NOT NULL,
+    relationship_type VARCHAR(50) NOT NULL,
     position_title        VARCHAR(255),
     ownership_percentage  DECIMAL(5, 2),
     address               TEXT,

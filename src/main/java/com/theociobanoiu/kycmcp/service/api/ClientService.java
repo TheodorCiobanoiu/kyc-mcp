@@ -2,7 +2,6 @@ package com.theociobanoiu.kycmcp.service.api;
 
 import com.theociobanoiu.kycmcp.model.dto.ClientDTO;
 import com.theociobanoiu.kycmcp.model.dto.request.CreateClientRequest;
-import com.theociobanoiu.kycmcp.model.enums.ClientType;
 import com.theociobanoiu.kycmcp.model.enums.RiskLevel;
 import jakarta.validation.constraints.NotNull;
 
@@ -33,7 +32,7 @@ public interface ClientService {
      * @param riskLevel  specific risk level to filter by
      * @return list of matching clients
      */
-    List<ClientDTO> searchClients(String name, ClientType clientType, RiskLevel riskLevel);
+    List<ClientDTO> searchClients(String name, RiskLevel riskLevel);
 
     /**
      * Retrieve full client information with associated persons.

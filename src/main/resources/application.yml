@@ -29,12 +29,17 @@ spring:
         name: "kyc-mcp-server"
         version: "1.0.0"
         type: SYNC
-        instructions: "KYC server for high-risk client management"
+        instructions: "KYC server for client management and compliance"
         sse-message-endpoint: /mcp/messages
         capabilities:
           tool: true
+          resource: false
+          prompt: false
+          completion: false
 
+# Enable debug logging for MCP
 logging:
   level:
     com.theociobanoiu.kycmcp: DEBUG
+    org.springframework.ai.mcp: DEBUG
     liquibase: INFO

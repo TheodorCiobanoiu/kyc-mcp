@@ -4,7 +4,6 @@ import com.theociobanoiu.kycmcp.model.dto.ClientDTO;
 import com.theociobanoiu.kycmcp.model.dto.request.CreateClientRequest;
 import com.theociobanoiu.kycmcp.model.entities.Client;
 import com.theociobanoiu.kycmcp.model.entities.Person;
-import com.theociobanoiu.kycmcp.model.enums.ClientType;
 import com.theociobanoiu.kycmcp.model.enums.RiskLevel;
 import com.theociobanoiu.kycmcp.repository.ClientRepository;
 import com.theociobanoiu.kycmcp.repository.PersonRepository;
@@ -45,10 +44,10 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public List<ClientDTO> searchClients(String name, ClientType clientType, RiskLevel riskLevel) {
-        log.debug("Searching clients with name: {}, type: {}, risk: {}", name, clientType, riskLevel);
+    public List<ClientDTO> searchClients(String name, RiskLevel riskLevel) {
+        log.debug("Searching clients with name: {}, risk: {}", name, riskLevel);
 
-        List<Client> clients = clientRepository.searchClients(name, clientType, riskLevel);
+        List<Client> clients = clientRepository.searchClients(name, riskLevel);
         log.debug("Found {} clients matching search criteria", clients.size());
 
         return ClientDTO.fromList(clients);
