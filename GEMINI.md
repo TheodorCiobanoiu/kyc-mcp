@@ -3,6 +3,20 @@
 This document provides project-specific context to the Gemini AI assistant. Adhering to these guidelines will ensure
 consistency and leverage the existing patterns within the project.
 
+---
+
+## Table of Contents
+
+- [1. Project Overview](#1-project-overview)
+- [2. Key Technologies](#2-key-technologies)
+- [3. Commands](#3-commands)
+- [4. Project Structure & Architecture](#4-project-structure--architecture)
+- [5. Coding Conventions & Patterns](#5-coding-conventions--patterns)
+    - [5.1. Logging Conventions](#51-logging-conventions)
+- [6. Documentation](#6-documentation)
+
+---
+
 ## 1. Project Overview
 
 This is a Spring Boot application designed for a KYC (Know Your Customer) system. It manages clients and their
@@ -95,4 +109,11 @@ The project follows a standard layered architecture pattern common in Spring Boo
 - **What to Log**:
     - **Controllers**: Log request entry and successful completion at `DEBUG`.
     - **Services**: Log business logic execution, method flows at `DEBUG`, and key outcomes at `INFO`.
-    - **Exception Handlers**: Log all caught exceptions at `ERROR` level, including the full stack trace. 
+  - **Exception Handlers**: Log all caught exceptions at `ERROR` level, including the full stack trace.
+
+## 6. Documentation
+
+- **Location**: All project documentation, such as the Product Requirements Document (PRD), is located in the
+  `/documentation` directory.
+- **Maintenance**: This documentation must be kept up to date. Any changes to product requirements, architecture, or key
+  design decisions should be reflected in the relevant documents.

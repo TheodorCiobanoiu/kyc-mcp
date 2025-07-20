@@ -6,7 +6,7 @@ import com.theociobanoiu.kycmcp.service.api.ClientService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.tool.annotation.Tool;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.List;
@@ -16,7 +16,7 @@ import java.util.Map;
  * MCP Tools for KYC operations.
  * These tools can be called by Claude or any MCP client to interact with the KYC system.
  */
-@Service
+@Component
 @RequiredArgsConstructor
 @Slf4j
 public class KycMcpTools {
@@ -56,21 +56,6 @@ public class KycMcpTools {
         } catch (Exception e) {
             log.error("Error in MCP tool 'search_clients': {}", e.getMessage(), e);
             return createErrorResponse("search_clients", e.getMessage());
-        }
-    }
-
-    /**
-     * Helper method to parse RiskLevel from string
-     */
-    private RiskLevel parseRiskLevel(String riskLevel) {
-        if (riskLevel == null || riskLevel.trim().isEmpty()) {
-            return null;
-        }
-        try {
-            return RiskLevel.valueOf(riskLevel.toUpperCase());
-        } catch (IllegalArgumentException e) {
-            log.warn("Invalid risk level '{}', ignoring parameter", riskLevel);
-            return null;
         }
     }
 

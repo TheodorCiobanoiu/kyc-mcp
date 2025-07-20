@@ -1,0 +1,89 @@
+# REQ-000 - Standardized MCP Server Response
+
+- **Author**: Theodor Ciobanoiu
+- **Status**: To Do
+- **Created**: 2025-07-20
+- **Last Updated**: 2025-07-20
+
+---
+
+## 1. User Story
+
+```
+As a developer,
+I want a standardized, type-safe response wrapper for all MCP tools,
+So that I can create robust and predictable tool interfaces for the AI agent.
+```
+
+## 2. Acceptance Criteria
+
+### Scenario 1: Successful Response
+
+- **Given** An MCP tool successfully retrieves or creates data (e.g., a `ClientDto`).
+- **When** a successful response is created using `McpServerResponse.success(data)`.
+- **Then** an `McpServerResponse` object is created with `status = SUCCESS`.
+- **And** the `data` field contains the `ClientDto` payload.
+- **And** the `error` field is `null`.
+
+### Scenario 2: Error Response
+
+- **Given** An MCP tool encounters an error (e.g., a resource is not found).
+- **When** an error response is created using `McpServerResponse.error("NOT_FOUND", "Client not found")`.
+- **Then** an `McpServerResponse` object is created with `status = ERROR`.
+- **And** the `data` field is `null`.
+- **And** the `error` field contains an `McpServerError` object with the specified code and message.
+
+## 3. Functional Requirements
+
+### 3.1. Data Models
+
+- **`McpServerResponse<T>`**: A generic class to wrap all MCP tool responses.
+    - `Status status`: An enum indicating the outcome (`SUCCESS` or `ERROR`).
+    - `T data`: A generic field holding the successful response payload. It is `null` if `status` is `ERROR`.
+    - `McpServerError error`: A record holding error details. It is `null` if `status` is `SUCCESS`.
+
+- **`Status`**: An enum with two possible values:
+    - `SUCCESS`
+    - `ERROR`
+
+- **`McpServerError`**: A record to provide structured error information.
+    - `String code`: A machine-readable error code (e.g., `NOT_FOUND`, `INVALID_INPUT`).
+    - `String message`: A human-readable description of the error.
+
+### 3.2. Factory Methods
+
+The `McpServerResponse<T>` class should provide static factory methods for easy instantiation:
+
+- `public static <T> McpServerResponse<T> success(T data)`
+- `public static <T> McpServerResponse<T> error(String code, String message)`
+
+## 4. Non-Functional Requirements (NFRs)
+
+- **Immutability**: The response object should be immutable to ensure thread safety.
+- **Serialization**: The object must be serializable to JSON so the MCP framework can correctly process it.
+
+## 5. Technical Notes & Implementation Details
+
+- **Affected Components**: A new package `com.theociobanoiu.kycmcp.model.response` will be created to hold these
+  classes.
+- **Implementation**: `McpServerResponse` will be a standard Java class. `McpServerError` will be a Java `record`.
+  `Status` will be an `enum`.
+
+## 6. Assumptions & Dependencies
+
+- **Dependencies**: This requirement will be a foundational dependency for all other requirements involving MCP tools (
+  REQ-004, REQ-005, etc.).
+
+## 7. Implementation Plan
+
+### Development Steps
+
+1. **Create Package**:
+    - *Details*: Create the directory `src/main/java/com/theociobanoiu/kycmcp/model/response/`.
+2. **Create `Status` Enum**:
+    - *Details*: Create the `Status.java` enum with `SUCCESS` and `ERROR` values.
+3. **Create `McpServerError` Record**:
+    - *Details*: Create the `McpServerError.java` record with `String code` and `String message` fields.
+4. **Create `McpServerResponse` Class**:
+    - *Details*: Create the `McpServerResponse.java` class with the specified fields and implement the `success` and
+      `error` static factory methods.
