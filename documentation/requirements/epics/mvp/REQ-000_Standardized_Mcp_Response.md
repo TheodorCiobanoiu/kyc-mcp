@@ -76,14 +76,74 @@ The `McpServerResponse<T>` class should provide static factory methods for easy 
 
 ## 7. Implementation Plan
 
+### Implementation Summary
+
+This plan details the creation of the `McpServerResponse<T>` class, its supporting `Status` enum, and `McpServerError`
+record, leveraging Lombok for concise code.
+
 ### Development Steps
 
-1. **Create Package**:
-    - *Details*: Create the directory `src/main/java/com/theociobanoiu/kycmcp/model/response/`.
-2. **Create `Status` Enum**:
-    - *Details*: Create the `Status.java` enum with `SUCCESS` and `ERROR` values.
-3. **Create `McpServerError` Record**:
-    - *Details*: Create the `McpServerError.java` record with `String code` and `String message` fields.
-4. **Create `McpServerResponse` Class**:
-    - *Details*: Create the `McpServerResponse.java` class with the specified fields and implement the `success` and
-      `error` static factory methods.
+1. **Create the `response` Package**
+    - **Action:** Create the directory structure for the new package.
+    - **Command:**
+      ```bash
+      mkdir -p src/main/java/com/theociobanoiu/kycmcp/model/response
+      ```
+
+2. **Create `Status.java` Enum**
+    - **Action:** Define the `Status` enum with `SUCCESS` and `ERROR` values.
+    - **File to Create:** `src/main/java/com/theociobanoiu/kycmcp/model/response/Status.java`
+    - **Code:**
+      ```java
+      package com.theociobanoiu.kycmcp.model.response;
+
+      public enum Status {
+          SUCCESS,
+          ERROR
+      }
+      ```
+
+3. **Create `McpServerError.java` Record**
+    - **Action:** Define the `McpServerError` record with `code` and `message` fields, using Lombok's `@Builder` for
+      convenient instantiation.
+    - **File to Create:** `src/main/java/com/theociobanoiu/kycmcp/model/response/McpServerError.java`
+    - **Code:**
+      ```java
+      package com.theociobanoiu.kycmcp.model.response;
+
+      import lombok.Builder;
+
+      @Builder
+      public record McpServerError(String code, String message) {
+      }
+      ```
+
+4. **Create `McpServerResponse.java` Class**
+    - **Action:** Define the `McpServerResponse` class, including its fields, and use Lombok's
+      `@AllArgsConstructor(access = AccessLevel.PRIVATE)` to generate the private constructor. Static factory methods
+      for `success` and `error` responses will remain.
+    - **File to Create:** `src/main/java/com/theociobanoiu/kycmcp/model/response/McpServerResponse.java`
+    - **Code:**
+      ```java
+      package com.theociobanoiu.kycmcp.model.response;
+
+      import lombok.AccessLevel;
+      import lombok.AllArgsConstructor;
+      import lombok.Getter;
+
+      @Getter
+      @AllArgsConstructor(access = AccessLevel.PRIVATE) // Generates a private constructor for all fields
+      public class McpServerResponse<T> {
+          private final Status status;
+          private final T data;
+          private final McpServerError error;
+
+          public static <T> McpServerResponse<T> success(T data) {
+              return new McpServerResponse<>(Status.SUCCESS, data, null);
+          }
+
+          public static <T> McpServerResponse<T> error(String code, String message) {
+              return new McpServerResponse<>(Status.ERROR, null, McpServerError.builder().code(code).message(message).build());
+          }
+      }
+      ```
